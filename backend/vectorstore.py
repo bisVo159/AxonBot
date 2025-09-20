@@ -2,26 +2,32 @@ from pinecone import Pinecone, ServerlessSpec, Metric
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from config import PINECONE_API_KEY, EMBED_MODEL
+from config import PINECONE_API_KEY, EMBED_MODEL, PINECONE_INDEX_NAME
 
 
 pc=Pinecone(api_key=PINECONE_API_KEY)
-embeddings=HuggingFaceEmbeddings(model_name=EMBED_MODEL)
+embedding=HuggingFaceEmbeddings(model_name=EMBED_MODEL)
 
-index_name = "langgraph-rag-index"
-
-if not pc.has_index(index_name):
+try:
+    if not pc.has_index(PINECONE_INDEX_NAME):
+        pc.create_index(
+            name=PINECONE_INDEX_NAME,
+            dimension=768,
+            metric=Metric.COSINE,
+            spec=ServerlessSpec(cloud="aws", region="us-east-1")
+        )
+except Exception as e:
+    print(f"Index creation failed: {e}. Trying to recreate...")
     pc.create_index(
-    name=index_name,
-    dimension=768,
-    metric=Metric.COSINE,
-    spec=ServerlessSpec(
-        cloud='aws',
-        region='us-east-1'
+        name=PINECONE_INDEX_NAME,
+        dimension=768,
+        metric=Metric.COSINE,
+        spec=ServerlessSpec(cloud="aws", region="us-east-1")
     )
-)
+
+index=pc.Index(PINECONE_INDEX_NAME)
     
-vector_store = PineconeVectorStore(index=pc.Index(index_name), embedding=embeddings)
+vector_store = PineconeVectorStore(index, embedding)
 
 def get_retriever():   
     return vector_store.as_retriever(
@@ -32,6 +38,11 @@ def get_retriever():
 def add_document_to_vectorstore(text_content: str):
     if not text_content:
         raise ValueError("Document content cannot be empty.")
+    
+    try:
+        index.delete(delete_all=True)
+    except Exception as e:
+        print(f"No existing namespace to clear: {e}")
     
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
