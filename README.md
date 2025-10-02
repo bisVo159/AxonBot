@@ -40,7 +40,15 @@ AxonBot’s workflow is defined as a **LangGraph Agent State Graph**.
 ### 🧩 Agent State Graph
 Below is the **workflow diagram** of AxonBot:
 
-![Agent State Graph](image/agent_workflow.png)
+![Agent State Graph](images/agent_workflow.png)
+
+---
+
+## 🖼️ UI Screenshot
+
+Here’s a preview of the AxonBot user interface:
+
+![AxonBot UI](images/ui_screenshot.png)
 
 ---
 
