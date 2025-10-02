@@ -54,7 +54,7 @@ class AxonBotAgent:
 
         system_prompt += (
             "\n- 'answer': For very simple, direct questions you can answer without any external lookup (e.g., 'What is your name?')."
-            "\n- 'end': For pure greetings or small-talk where no factual answer is expected (e.g., 'Hi', 'How are you?'). If choosing 'end', you MUST provide a 'reply'."
+            "\n- 'end': For pure greetings or small-talk where no factual answer is expected (e.g., 'Hi', 'How are you?'). If choosing 'end', you MUST provide a 'reply'. if user ask you about your identity(e.g., 'Who are you?'), you can also choose 'end' and in reply you will convince user that you are AxonBot an ai RAG Agent."
             "\n\nExample routing decisions:"
             "\n- User: 'What are the treatment of diabetes?' -> Route: 'rag' (Factual knowledge, likely in KB)."
             "\n- User: 'What is the capital of France?' -> Route: 'rag' (Common knowledge, can be in KB or answered directly if LLM knows)."
