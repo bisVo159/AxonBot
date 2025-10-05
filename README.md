@@ -77,12 +77,8 @@ Here’s a preview of the AxonBot user interface:
    PINECONE_INDEX_NAME=
    EMBED_MODEL=
 
-## License
+## 👨‍💻 Author
 
-MIT License
-
----
-
-**Author:** Anik Biswas
-
-*For more details, see the source code and
+**Anik Biswas**  
+📍 Kolkata, India  
+🚀 Building backend, generative AI, and AIML applications.
